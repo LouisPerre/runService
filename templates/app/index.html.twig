@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AppController!{% endblock %}
+
+{% block body %}
+    <div class="d-flex w-100 flex-wrap">
+        <h2>Mes projets</h2>
+        {% for project in myProject %}
+            <a href="{{ path('project_show', {'id': project.id}) }}" class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ project.title }}</h5>
+                    <p class="card-text">{{ project.description }}</p>
+                    <p class="card-text">{{ project.createdAt ? project.createdAt|date('Y-m-d H:i:s') : '' }}</p>
+                    <p class="card-text">{{ project.endAt ? project.endAt|date('Y-m-d H:i:s') : '' }}</p>
+                </div>
+            </a>
+        {% endfor %}
+        <h2>Je collabore dessus</h2>
+        {% for project in projects %}
+            <a href="{{ path('project_show', {'id': project.id}) }}" class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ project.title }}</h5>
+                    <p class="card-text">{{ project.description }}</p>
+                    <p class="card-text">{{ project.createdAt ? project.createdAt|date('Y-m-d H:i:s') : '' }}</p>
+                    <p class="card-text">{{ project.endAt ? project.endAt|date('Y-m-d H:i:s') : '' }}</p>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+    <a href="{{ path('project_new') }}" class="btn btn-primary">Nouveau Project</a>
+
+{% endblock %}

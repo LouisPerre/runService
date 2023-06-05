@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Projects{% endblock %}
+
+{% block body %}
+    <div class="container w-100">
+        <div class="card" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">{{ project.title }}</h5>
+                <h6 class="card-subtitle mb-2 text-body-secondary">Createur {{ project.creator.userIdentifier }}</h6>
+                <p class="card-text">{{ project.description }}</p>
+                <p class="card-text">{{ project.createdAt ? project.createdAt|date('Y-m-d H:i:s') : '' }}</p>
+                <p class="card-text">{{ project.endAt ? project.endAt|date('Y-m-d H:i:s') : '' }}</p>
+                {% if project.collaborator|length > 0 %}
+                    <h3>Collaborateur</h3>
+                    {% for collaborator in project.collaborator %}
+                        <div class="card" style="width: 100%;">
+                            <h5 class="card-title">{{ collaborator.userIdentifier }}</h5>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% if app.user == project.creator %}
+                    {{ form_start(form) }}
+                        {{ form_widget(form.collaborator) }}
+                        <button type="submit">Enregistrer</button>
+                    {{ form_end(form) }}
+                {% endif %}
+            </div>
+        </div>
+        {% for task in project.tasks %}
+            <div class="card">
+                <h5>{{ task.title }}</h5>
+                <p class="card-text">{{ task.description }}</p>
+                <p class="card-text">Termine le : {{ task.endAt ? task.endAt|date('Y-m-d H:i:s') : '' }}</p>
+                <div class="d-flex gap-4">
+                    <p>Priorite : {{ task.priority }}</p>
+                    <p>Statut : {{ task.status }}</p>
+                </div>
+            </div>
+        {% endfor %}
+        {% if app.user in project.collaborator %}
+            <a href="{{ path('task_new', {'id': project.id}) }}">Nouvelle tache</a>
+        {% endif %}
+    </div>
+
+    <a href="{{ path('app_app') }}">back to list</a>
+
+
+{% endblock %}
